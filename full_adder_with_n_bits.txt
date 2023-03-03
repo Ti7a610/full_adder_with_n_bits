@@ -1,0 +1,41 @@
+module fa (
+  input a,b,z,
+  output cout,car
+);
+  assign {car,cout}=a+b+z;
+
+endmodule
+
+module fulladd #  (parameter len=4)(
+   input wire[len-1:0] a, b,
+   output [len-1:0] cout,
+   output carry_out);
+   wire [len-1:0]v ;
+
+fa fa_i(
+      .a(a[0]),
+      .b(b[0]),
+      .z(0),
+      .cout(cout[0]),
+      .car(v[0])
+); 
+ generate 
+  genvar i ;
+    for(i=1;i<len;i=i+1)
+
+   begin:
+fa_inst
+      fa fa_i(
+      .a(a[i]),
+      .b(b[i]),
+      .z(v[i-1]),
+      .cout(cout[i]),
+      .car(v[i])
+); 
+  
+
+   end
+ endgenerate
+assign carry_out = v[len-1];
+endmodule
+ 
